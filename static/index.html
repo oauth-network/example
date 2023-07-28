@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="oauth-network-verification" content="ac5295163a571697c374f3aee425820b4d785bad13f7af01d0f983f7c5fed4c1" />
+	<meta name="privacy" content="/개인정보약관 경로/" />
+	<meta name="terms" content="/이용약관 경로/" />		
+
+	<style>	
+		@import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+		@import url('//fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Emoji:wght@700&display=swap');
+
+
+		*{ margin: 0; padding: 0; border: 0; line-height: 1; text-decoration:none; list-style:none; font-style:normal; font-size:14px; font-family: 'Noto Sans KR', sans-serif; color: #000; }
+
+		.tb{position:relative; display:table; width: 100%;}
+		.tc{display:table-cell; height: 100%;}
+
+		.main oauth forms{position: relative; display: block; max-width: 320px; margin: 50px auto 0; padding: 0 2em; box-sizing: border-box;}
+		.main oauth forms .title{margin-bottom: 40px; font-size:20px;}
+		.main oauth forms .title p{margin-bottom: 20px; font-size: 1em; font-weight: bold;}
+		.main oauth forms .title a{font-size: 0.7em;}
+		.main oauth forms.mailto.loading .lds-ring {top: -170px;}
+		.main oauth forms.mailto.loading .verify{display: block;}
+		.main oauth forms .verify{display: none; position: absolute; top: 116%; left: -3em; right: -3em; line-height: 1.3; font-weight: bold; font-size: 1.3em; text-align: center; text-transform: capitalize;}
+		.main oauth forms .title a{}
+
+		.main oauth forms.mailto.loading a[href="/"]{display: block;}
+
+		.main oauth forms .lds-ring a[href="/"]{display: none; position: absolute; left: -3em; right: -3em; top: 100%; margin-top: 5em; font-size: 1.2em; text-decoration: underline;}
+
+		.main oauth.on .items{border-bottom: 1px solid #ddd;}
+		/*.main oauth.on .items>ul{z-index: 1; opacity: 1;}*/
+		.main oauth.on .tip{display: block;}
+		.main oauth .tip{position: relative; margin: 50px -50px 80px; z-index: -1;}
+		.main oauth .tip em{display: block; margin-bottom: 20px; font-size:16px;}
+		.main oauth .tip p{font-size:10px;}
+
+		.main oauth .tb{width: 100%; height: 100%;}
+		.main oauth .tc{text-align:center; vertical-align:middle;}
+
+		.main oauth forms:after{content:"";position: fixed;left: -3em;right: -3em; top: -2em;bottom: -10em;z-index: -1;background-color: rgba(255,255,255,0.0);transition-duration: 0.5s;}
+		/*.main oauth .items>ul{position: relative; opacity: 0; z-index: -1;}*/
+		.main oauth .items{position: relative; margin: 0 auto; max-width: 320px;}
+		.main oauth forms.loading:after{z-index: 10; background-color: rgba(255,255,255,0.9); backdrop-filter: blur(5px);}
+		.main oauth .items>ul li+li{margin-top: 15px;}
+
+		.main oauth a[href*="Kakao"]{display: block;padding: 20px;border-radius:5px;font-size: 20px;line-height: 25px;font-weight: bold;color: #000;background: #FEE500;}
+		.main oauth a[href*="Kakao"]:before{content:"";font-family: xeicon;font-weight: 900;font-size: 25px;line-height: 25px;margin-right: 10px;vertical-align: top;-webkit-text-stroke: 0.2px;}
+
+		.main oauth a[href*="Email"]{display: block;padding: 1em;border-radius: 5px;font-size: 1em;line-height: 20px;font-weight: bold;color: #000;background: #ddd;text-align: center;/* box-shadow: 0 0 0 1px #e4e4e4; */}
+
+		.main oauth a[href*="phone"]{background: #235bf5; color: #fff;}
+
+		.main oauth a[href*="naver"]{background-color: #03c75a; color:#fff;}
+		.main oauth a[href*="daum"]{background-color: #FEE500;}
+		.main oauth a[href*="nate"]{background-color: #ff2c2e; color:#fff;}
+		.main oauth a[href*="google"]{background-color: #fff;box-shadow: inset 0 0 0 1px #e4e4e4;}
+		.main oauth a[href*="apple"]{background-color: #000; color:#fff;}
+
+
+		forms .msg{position: absolute; opacity: 0; left: 0; right: 0; top: 0; bottom: 0; z-index: -1; transition-duration: 1s; background: #fff;}
+		forms .msg .icon{font-family: xeicon; font-size: 80px; margin-bottom: 30px;}
+		forms .tb{width: 100%; height: 100%;}
+		forms .tc{text-align: center; vertical-align: middle;}
+		forms .text span{font-size:20px;}
+
+		forms.complete .msg{z-index: 0;opacity: 1}
+		forms.complete strong{font-size:0}
+		forms.complete strong:after;{content:"인증이 완료되었습니다"; font-size:20px;}
+		.main oauth forms.complete .guide{opacity: 0}
+
+
+		.lds-ring{position: absolute; left: 0;right: 0;top: 0;bottom: 0; margin:auto; width: 80px; height: 80px; opacity: 0; z-index: -1; transition-duration: 0.5s;}
+
+		.loading .lds-ring {
+			z-index: 11;
+			opacity: 1;
+		}
+		.loading .lds-ring div {
+			box-sizing: border-box;
+			display: block;
+			position: absolute;
+			width: 64px;
+			height: 64px;
+			margin: 8px;
+			border: 3px solid #000;
+			border-radius: 50%;
+			animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+			border-color: #000 transparent transparent transparent;
+		}
+		.lds-ring div:nth-child(1) {
+			animation-delay: -0.45s;
+		}
+		.lds-ring div:nth-child(2) {
+			animation-delay: -0.3s;
+		}
+		.lds-ring div:nth-child(3) {
+			animation-delay: -0.15s;
+		}
+		@keyframes lds-ring {
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+
+		oauth.on .guide{opacity: 0; z-index: -1;}
+
+		oauth .guide{position: absolute;left: 0;right: 0;top: 0;bottom: 0;background-color: #fff;z-index: 1;box-shadow: 0 0 9px 0px #e4e4e4;}
+		oauth .guide .tc{padding-bottom: 56px;}
+		oauth .guide .steps{position: absolute; left: 0;right: 0;top: 0;bottom: 0;}
+		oauth .guide ul,
+		oauth .guide li{position: relative; min-width: 100%; height: 100%;}
+		oauth .guide li .context *{opacity: 0.4; transition-duration: 0.5s;}
+		oauth .guide li .context .tit{margin: 1em}
+		oauth .guide li[aria-hidden="false"] .context *{opacity: 1;}
+
+		oauth .guide .close{position: absolute; left: 0; top: -5em;}
+		oauth .guide .close:after{content: "\f053"; font-size: 22px; font-family: "Font Awesome 6 Free"; font-weight: 600;}
+
+		oauth .guide .ts-controls .ts-prev{display: none;}
+		oauth .guide .ts-controls .ts-next{position: absolute;padding: 1.5em;left: 5em;bottom: 0;right: 0;background-color: #efefef;border-left: 1px solid #fff;text-transform: capitalize;font-weight: bold;cursor: pointer;}
+		oauth .guide .ts-controls .ts-paging{position: absolute; left: 0; right: 0; top: 1.5em; z-index: 1;}
+		oauth .guide .ts-controls .ts-paging button{overflow: hidden; text-indent: -9999px; width: 8px; height: 8px;border-radius: 50%; background-color: #000; opacity: 0.2;}
+		oauth .guide .ts-controls .ts-paging button+button{margin-left: 6px;}
+		oauth .guide .ts-controls .ts-paging button.ts-paging-active{opacity: 1;}
+		oauth .guide .skip{position: absolute;left: 0;bottom: 0;padding: 1.5em;cursor: pointer;background: #efefef; z-index: 1;}
+
+		html[lang="ko"] oauth .guide .step01 .desc span:after{content:"인증 메일을 전송합니다"}
+		html[lang="ko"] oauth .guide .step02 .desc span:after{content:"로그인 화면으로 돌아옵니다"}
+		html[lang="ko"] oauth .guide .step03 .desc span:after{content:"인증 확인을 기다립니다"}
+
+
+		oauth{display: block; margin-bottom: 100px;}
+		oauth .lds-ring{position: fixed;}
+
+		qr{position: relative; display: none; text-align: center;}
+
+		.qr-code{position: relative; display: block; padding: 3em;}
+		.qr-code img{position: relative; display: block; width: 100%; z-index: 1;}
+
+		qr{display: block;}
+		.qr-code{margin-bottom: 30px; padding: 0; max-width: 320px;}
+		#footer{background-color: inherit;}
+
+	</style>
+	<title></title>
+</head>
+<body>
+	<div class="wrap" oauth>
+		<div class="main">
+			<oauth>
+				<div class="tb">
+					<div class="tc">
+						<div class="area">
+							<div class="title">
+								<a href="/"><img src="/static/img/common/logo0.png" alt=""></a>
+							</div>
+							
+							<forms class="loading">
+								<div class="title">
+									<p>휴대폰 이메일 인증</p>
+									<span>QR을 스캔하여 메일 전송 후<br>인증확인 버튼을 눌러주세요</span>
+									<!-- <p>After scanning the QR and sending an email</p>
+									<span>Please click the confirmation button</span> -->
+								</div>
+
+								<qr></qr>
+
+								<div class="lds-ring">
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<p class="verify"></p>
+									<a href="/">다른 인증 선택하기</a>
+								</div>
+
+								<div class="items">
+									<ul>
+										<li>
+											<a href="javascript:Email('phone')">인증확인</a>
+										</li>
+									</ul>
+
+									<div class="msg">
+										<div class="tb">
+											<div class="tc">
+												<div class="icon"></div>
+												<div class="text">
+													<span>잠시후 메인 페이지로 이동됩니다.</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="tip">
+									<em>메일 발송후 1분정도 소요될수 있습니다.</em>
+									<p>
+										* 개인정보 보호를 위해 개인 기기에서만 사용해 주세요.<br><br>
+										* SSL이 반영되지 않은 이메일 서비스는 인증이 불가능합니다.
+									</p>
+								</div>
+
+								<div class="items">
+									<ul>
+										<li>
+											<a href="javascript:Email('google')">구글 이메일 인증</a>
+										</li>
+										<li>
+											<a href="javascript:Email('naver')">네이버 이메일 인증</a>
+										</li>
+										<li>
+											<a href="javascript:Email('nate')">네이트 이메일 인증</a>
+										</li>
+										<li>
+											<a href="javascript:Email('apple')">애플 이메일 인증</a>
+										</li>										
+									</ul>
+
+									<div class="guide">
+										<a class="skip">Skip</a>
+										<div class="steps">
+											<ul>
+												<li>
+													<div class="tb step step01">
+														<div class="tc context">
+															<div class="tit">
+																<strong>Send verify email</strong>
+															</div>
+															<div class="desc">
+																<span></span>
+															</div>
+														</div>
+													</div>
+												</li>
+												<li>
+													<div class="tb step step02">
+														<div class="tc context">
+															<div class="tit">
+																<strong>Back to Login</strong>
+															</div>
+															<div class="desc">
+																<span></span>
+															</div>
+														</div>
+													</div>
+												</li>
+												<li>
+													<div class="tb step step03">
+														<div class="tc context">
+															<div class="tit">
+																<strong>Wait for verify</strong>
+															</div>
+															<div class="desc">
+																<span></span>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</forms>
+						</div>
+					</div>
+				</div>
+			</oauth>
+		</div>
+		<div id="footer"></div>
+	</div>
+
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/jquery.touchSlider.js"></script>
+	<script src="/static/js/qrcode.min.js?ver1"></script>
+	<script src="/static/js/oauth3.js"></script>
+
+	<script>
+		; (function() {
+			if(window.localStorage.verify){
+				$('.guide').remove();
+			}else{
+				var $skip = $('.guide .skip');
+					
+
+				var current = 0;
+
+				var $steps = $('.guide .steps');
+					$skip.on({
+						click : function(e){
+							$("oauth").addClass("on");
+							$("oauth forms").removeClass("loading");
+						}
+					})
+
+					$steps.touchSlider({
+						roll:false,
+						resize:true,
+						transition:false,
+						initComplete: function(e) {
+							
+						},
+						counter: function(e) {
+							console.log(e);
+
+							var $next = $(this).find(".ts-next");
+
+							// $('.guide .steps')
+
+							if(e.total == e.current){
+								$next.text("confirm");
+
+								if(current == e.current){
+									$("oauth").addClass("on");
+									$("oauth forms").removeClass("loading");
+								}
+							}else{
+								$next.text("next");
+							}
+
+							current = e.current;
+						}
+					});
+			}
+
+			OAuth3.on("ready", function(){
+				OAuth3.Origin = "";
+
+				var cc_url = window.location.origin;
+
+				if(OAuth3.localhost){
+					cc_url = "http://"+OAuth3.localhost;
+				}
+
+				// 메뉴 & 멤버 조회
+				var request = {
+					method : "GET",
+					query : {
+						cc : cc_url
+					}
+				}
+				
+				// 값 받기
+				var response = function(res){
+					console.log(res);
+
+					var cookies = JSON.parse(res.body.cookies);
+
+					if(!OAuth3.hash && cookies.hash){
+						OAuth3.hash = cookies.hash;
+					}
+
+					var $forms = document.querySelector("forms");
+						$forms.className = "";
+					
+					if(cookies.email){
+						$forms.innerHTML = '\
+							<a>'+cookies.email+'</a>\
+							<a class="logout">logout</a>\
+						';
+
+						$(".logout").on({
+							click : function(){
+								var request = {
+									method : "POST",
+									query : {},
+									url : OAuth3.host+"/logout"
+								}
+
+								var response = function(res){
+									window.location.reload();
+								}
+
+								OAuth3.fetch(request, response);
+							}
+						})
+					}else{
+						var rows = res.body.rows;
+
+						var target = document.querySelector("sitemap");
+
+						var len = rows.length;
+
+						var limit = rows.limit;
+
+						var teams = {};
+
+						for(var f = 0; f < len; f++){
+							var row = rows[f];
+
+							teams[row.From] = row;
+						}
+
+						
+
+						OAuth3.teams = teams;
+
+						var host = window.location.host;
+
+						if(OAuth3.localhost){
+							host = OAuth3.localhost;
+						}
+
+						if(OAuth3.isMobile){
+							var $a = document.querySelector('a[href="javascript:Email(\'phone\')"]');
+								$a.textContent = "인증";
+							
+							document.querySelector('.main oauth forms .title span').innerHTML = '메일 전송 후<br>인증확인 버튼을 눌러주세요';
+						}else{
+							var to = encodeURIComponent(host+"/#"+cookies.hash+"@oauth.email");
+
+							var mailto = "mailto:"+to;
+
+							document.querySelector("qr").innerHTML = '<a target="_blank" href="'+mailto+'" class="qr-code"></a>';
+
+							var $qrcode = document.querySelector(".qr-code");
+
+							new QRCode($qrcode, {
+								text: mailto,
+								width: 300,
+								height: 300,
+								colorDark : "#000000",
+								colorLight : "#ffffff",
+								correctLevel : QRCode.CorrectLevel.H
+							});
+						}
+					}
+				}
+
+				OAuth3.fetch(request, response);
+			})
+		})();
+
+		function Email(compose){
+			var mailto = "";
+
+			var host = window.location.host;
+
+			if(OAuth3.localhost){
+				host = OAuth3.localhost;
+			}
+
+			var to = encodeURIComponent(host+"/#"+OAuth3.hash+"@oauth.email");
+
+			if(compose == "phone"){
+				mailto = "mailto:"+to;
+
+				if(OAuth3.isMobile){
+					compose = "";
+				}else{
+					mailto = "";
+				}
+			}else if(compose == "naver"){
+				mailto = "https://mail.naver.com/write/?cmd=compose&to="+to;
+			}else if(compose == "daum"){
+				mailto = "https://mail.daum.net/hanmail/mail/MailComposeFrame.daum?TO="+to+"#?composer";
+			}else if(compose == "nate"){
+				mailto = "https://mail3.nate.com/#write/?act=new&to="+to;
+			}else if(compose == "google"){
+				mailto = "https://mail.google.com/mail/?view=cm&fs=1&to="+to+"&su=&body=";
+			}else if(compose == "apple"){
+				mailto = "https://www.icloud.com/message/current/ko-kr/index.html#compose?to="+to;
+			}else{
+				mailto = "mailto:"+to;
+			}
+
+			var request = {
+				method : "GET",
+				count : 100,
+				url : OAuth3.host,
+				delay : 3000
+			}
+
+			if(mailto){
+				request.mailto = mailto;
+
+				if(compose){
+					request.compose = compose;
+				}
+			}
+
+			if(compose == "phone"){
+				request.query = {};
+			}
+
+			var $loading = document.querySelector("forms");
+				$loading.className = "loading mailto";
+
+			var deviceCompose = "메일 앱"; //OAuth3.isMobile;
+
+
+			var $verify = document.querySelector("forms .verify");
+				$verify.innerHTML = '인증 진행중';
+
+			// 값 받기
+			var response = function(res){
+				var rows = res.body.rows;
+
+				console.log("rows",rows);
+
+				var date = new Date();
+				var len = rows.length;
+
+				var limit = rows.limit;
+				var To = "";
+				var table = {};
+				console.log("--------------------------------------------------------");
+
+				var cookies = JSON.parse(res.body.cookies);
+
+				if(cookies.email){
+					OAuth3.opener ? OAuth3.opener.close() : "";
+
+					$loading.className = "complete";
+
+					var $title = document.querySelector("forms .title");
+						$title.innerHTML = '<p>인증완료</p>';
+
+					var uri = new URL(document.URL);
+
+					var href = document.referrer ? document.referrer : "/";
+
+					window.location.href = href;
+				}
+			}
+
+			OAuth3.fetch(request, response);
+		}
+	</script>
+</body>
+</html>

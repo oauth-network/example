@@ -1,0 +1,35 @@
+{
+	"version": 2,
+	"builds": [
+		{ "src": "static/**/**/*", "use": "@vercel/static" },
+		{ "src": "oauth/index.js", "use": "@vercel/node" }
+	],
+	"routes": [
+		{ "handle": "filesystem" },
+		{
+			"src": "/privacy/",
+			"methods": ["GET"],
+			"dest": "/static/privacy/"
+		},
+		{
+			"src": "/",
+			"methods": ["GET"],
+			"dest": "/static/"
+		},
+		{
+			"src": "/terms/",
+			"methods": ["GET"],
+			"dest": "/static/terms/"
+		},
+		{
+			"src": "/terms/",
+			"methods": ["GET"],
+			"dest": "/static/terms/"
+		},
+		{
+			"src": "/oauth/",
+			"methods": ["GET", "POST"],
+			"dest": "/oauth/"
+		}
+	]
+}
