@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"dependencies": {
-		"aws-sdk": "^2.1161.0",
+		"aws-sdk": "^2.1453.0",
 		"cookie": "^0.5.0",
 		"mysql2": "^2.3.3",
 		"ethers": "^6.3.0"
